@@ -1,5 +1,8 @@
+#include <iostream>
 #include <fstream>
 #include <complex>
+#include <array>
+#include <string>
 
 typedef std::complex<double> complex;
 
@@ -31,20 +34,20 @@ int main()
     for(int x = 0; x < width; x++){
       complex z(map_to_real(x), map_to_imaginary(y)); // map the pixel to the imaginary plane
       
-      for (int i = 0; i < maxiter; i++){ 
-	if (std::abs(f(z)) < tolerance){ // Color the pixel if z converges fast enough to a root
-	  int red = i % 255;
-	  int green = i % 255;
-	  int blue = i % 255;
+      for(int i = 0; i < maxiter; i++){ 
+	if(std::abs(f(z)) < tolerance){ // Color the pixel if z converges fast enough to a root
+	  int red = 255 - i*i % 255;
+	  int green = 255 - i*i % 255;
+	  int blue = 255 - i*i % 255;
 	  img << red << " " << green << " " << blue << std::endl;
 	  break;
-	}
+	  }
 	z = z - f(z)/deriv(z); // Newton's Method
       }
-      
-      if(std::abs(f(z)) > tolerance){ // Color black if z does not converge
+      if(std::abs(f(z)) > tolerance){
 	img << 0 << " " << 0 << " " << 0 << std::endl;
       }
+      
     }
   }
 
